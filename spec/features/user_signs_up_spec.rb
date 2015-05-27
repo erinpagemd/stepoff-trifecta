@@ -7,19 +7,22 @@ feature "User Signs Up" do
   end
 
   scenario "Happy Path" do
+    fill_in "Name", with: "Joe"
     fill_in "Email", with: "joe@example.com"
     fill_in "Password", with: "password1"
     fill_in "Password confirmation", with: "password1"
     click_on "Sign Up"
-    page.should have_content("Welcome, joe@example.com")
+    page.should have_content("Welcome, Joe")
   end
 
   scenario "Error Path" do
+    fill_in "Name", with: ""
     fill_in "Email", with: "joeexample.com"
     fill_in "Password", with: "password1"
     fill_in "Password confirmation", with: "food"
     click_on "Sign Up"
     page.should have_error_message("Please fix the errors below to continue.")
+    page.should have_error("can't be blank", on: "Name")
     page.should have_error("must be an email address", on: "Email")
     page.should have_error("doesn't match Password", on: "Password confirmation")
     fill_in "Email", with: "joe@example.com"
@@ -30,7 +33,7 @@ feature "User Signs Up" do
   end
 
   scenario "Already registered" do
-    Fabricate(:user, email: "susie@example.com", password: "ThisIsAwesome")
+    Fabricate(:user, name: "Susan", email: "susie@example.com", password: "ThisIsAwesome")
     fill_in "Email", with: "susie@example.com"
     fill_in "Password", with: "password1"
     fill_in "Password confirmation", with: "password1"
@@ -39,6 +42,6 @@ feature "User Signs Up" do
     field_labeled("Email").value.should == "susie@example.com"
     fill_in("Password", with: "ThisIsAwesome")
     click_on "Sign In"
-    page.should have_content("Welcome, joe@example.com")
+    page.should have_content("Welcome, Susan")
   end
 end
