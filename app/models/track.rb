@@ -8,7 +8,7 @@ class Track < ActiveRecord::Base
                        numericality: {
                          greater_than_or_equal_to: 0.1
                        }
-  validates :outdoor, presence: true
+  validates :outdoor, inclusion: { in: [true, false] }
   before_save :round_distance
 
   protected
