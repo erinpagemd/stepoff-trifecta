@@ -6,30 +6,31 @@ RSpec.describe Track, type: :model do
       described_class.destroy_all
     end
     it "should be invalid without a name" do
-      described_class.new(name: nil, distance: 0.5).should_not be_valid
+      Fabricate.build(:track, name: nil).should_not be_valid
     end
     it "should be invalid if name is all whitespace" do
-      described_class.new(name: "         ", distance: 0.5).should_not be_valid
+      Fabricate.build(:track, name: "         ").should_not be_valid
     end
     it "should be invalid if name is <= 2 chars" do
-      described_class.new(name: "tu", distance: 0.5).should_not be_valid
+      Fabricate.build(:track, name: "tu").should_not be_valid
     end
     it "should be invalid without a distance" do
-      described_class.new(name: "Road Way 5", distance: nil).should_not be_valid
+      Fabricate.build(:track, distance: nil).should_not be_valid
     end
     it "should have unique names" do
-      track1 = described_class.new(name: "Road Way 5", distance: 0.2)
-      track1.save
-      described_class.new(name: "Road Way 5", distance: 0.5).should_not be_valid
+      some_name = Faker::Name.name
+      Fabricate(:track, name: some_name)
+      Fabricate.build(:track, name: some_name).should_not be_valid
     end
     it "should round distances to the nearest tenth" do
-      track1 = described_class.new(name: "Road Way 5", distance: 0.26)
-      track1.save
+      track1 = Fabricate(:track, distance: 0.26)
       track1.distance.should eq(0.3)
     end
     it "should be invalid if distance is < 0.1" do
-      described_class.new(name: "Road Way 5", distance: -0.5).should_not be_valid
+      Fabricate.build(:track, distance: -0.5).should_not be_valid
     end
   end
-  it "should have a factory"
+  it "should have a factory" do
+    Fabricate(:track).should be_valid
+  end
 end
