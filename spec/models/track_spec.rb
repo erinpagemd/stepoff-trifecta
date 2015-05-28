@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Track, type: :model do
   describe "validations" do
+    after(:each) do
+      described_class.destroy_all
+    end
     it "should be invalid without a name" do
       described_class.new(name: nil, distance: 0.5).should_not be_valid
     end
