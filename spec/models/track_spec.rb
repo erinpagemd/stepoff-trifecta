@@ -17,7 +17,11 @@ RSpec.describe Track, type: :model do
     it "should be invalid without a distance" do
       described_class.new(name: "Road Way 5", distance: nil).should_not be_valid
     end
-    it "should have unique names"
+    it "should have unique names" do
+      track1 = described_class.new(name: "Road Way 5", distance: 0.2)
+      track1.save
+      described_class.new(name: "Road Way 5", distance: 0.5).should_not be_valid
+    end
     it "should round distances to the nearest tenth" do
       track1 = described_class.new(name: "Road Way 5", distance: 0.26)
       track1.save
