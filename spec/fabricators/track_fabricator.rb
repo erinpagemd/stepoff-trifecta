@@ -1,5 +1,5 @@
 Fabricator(:track) do
   name     {Faker::Name.name}
-  distance 9.99
+  distance {Random.rand(10.0).round(1)}
   outdoor  {[true, false].sample}
 end
