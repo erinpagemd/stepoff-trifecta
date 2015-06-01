@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessor :password, :password_confirmation
+  authenticates_with_sorcery!
 
   validates :email, :name, presence: true
   validates :name, length: { minimum: 3 }

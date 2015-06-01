@@ -1,7 +1,6 @@
 feature "User signs in" do
 
   before do
-    pending
     visit "/"
     click_on "Sign In"
   end
@@ -9,7 +8,7 @@ feature "User signs in" do
   scenario "Returning customer signs in" do
     user = Fabricate(:user, name: "Jenny")
     fill_in "Email", with: user.email
-    fill_in "Password", with: "this is a password"
+    fill_in "Password", with: "password1"
     click_button "Sign In"
     page.should have_content("Welcome back, Jenny")
     page.should_not have_content("Sign In")
@@ -29,28 +28,25 @@ feature "User signs in" do
     fill_in "Password", with: "wrongpassword"
     click_button "Sign In"
     page.should_not have_content("Sign Up")
-    page.should have_error_message("We could not sign you in. Please check your email/password and try again.")
+    page.should have_content("We could not sign you in. Please check your email/password and try again.")
     page.should_not have_content("Create your account")
     page.should_not have_content("Password confirmation")
-    fill_in "Password", with: "this is a password"
+    field_labeled("Email").value.should == user.email
+    fill_in "Password", with: "password1"
     click_button "Sign In"
     page.should have_content("Welcome back, Bob")
   end
 
   scenario "User signs in with wrong email" do
-    Fabricate(:user, email: "susie@example.com", password: "ThisIsAwesome")
-    within("form#user_session") do
-      fill_in "Email", with: "joe@example.com"
-      fill_in("Password", with: "ThisIsAwesome")
-      click_on "Sign In"
-    end
-    page.should have_error_message("We could not sign you in. Please check your email/password and try again.")
+    Fabricate(:user, email: "susie@example.com", password: "ThisIsAwesome", password_confirmation: "ThisIsAwesome")
+    fill_in "Email", with: "joe@example.com"
+    fill_in("Password", with: "ThisIsAwesome")
+    click_on "Sign In"
+    page.should have_content("We could not sign you in. Please check your email/password and try again.")
   end
 
   scenario "User signs in with blanks" do
-    within("form#user_session") do
-      click_on "Sign In"
-    end
-    page.should have_error_message("We could not sign you in. Please check your email/password and try again.")
+    click_on "Sign In"
+    page.should have_content("We could not sign you in. Please check your email/password and try again.")
   end
 end
