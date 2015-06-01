@@ -2,6 +2,7 @@ Hello, World!
 
 - if logged_in?
   = link_to "Sign Out", user_session_path, method: :delete
+  = link_to "Walking Tracks", new_track_path
 - else
   = link_to "Sign Up", new_user_path
   = link_to "Sign In", new_user_session_path
