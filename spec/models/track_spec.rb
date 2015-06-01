@@ -34,6 +34,6 @@ RSpec.describe Track, type: :model do
     end
   end
   it "should have a factory" do
-    Fabricate(:track).should be_valid
+    Fabricate.build(:track).should be_valid
   end
 end

@@ -2,12 +2,19 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe "validations" do
-    it "should be invalid if name is nil"
-    it "should be invalid if name too short"
-    it "should be invalid if email is nil"
-    it "should be invalid if email is not formatted correctly"
-    it "should have a working factory"
-    it "should have a secure password"
-    it "should be invalid if password is empty"
+    it { should validate_presence_of(:name) }
+    it { should validate_length_of(:name).is_at_least(3) }
+    it { should validate_presence_of(:email) }
+    it "should allow valid values for email" do
+      should allow_value("eliza@elizamarcum.com", "a@b.co.uk", "eliza+hash@example.com").for(:email)
+    end
+    describe "should be invalid if email is not formatted correctly" do
+      it { should_not allow_value("elizabrock.com").for(:email) }
+      it { should_not allow_value("eliza@examplecom").for(:email) }
+      it { should_not allow_value("@.com").for(:email) }
+    end
+    it "should have a working factory" do
+      Fabricate.build(:user).should be_valid
+    end
   end
 end
