@@ -1,10 +1,9 @@
 class TracksController < ApplicationController
   def index
-    @tracks
+    if params[:sort].present?
+      @tracks = Track.unscoped.order(params[:sort]).all
+    else
+      @tracks = Track.all
+    end
   end
-
-  def new
-
-  end
-
 end

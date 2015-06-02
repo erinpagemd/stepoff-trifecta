@@ -11,10 +11,19 @@ class Track < ActiveRecord::Base
   validates :outdoor, inclusion: { in: [true, false] }
   before_save :round_distance
 
+  default_scope ->{ order(:name) }
+
   protected
   def round_distance
     unless self.distance.nil?
-      self.distance = self.distance.round(1)
+      self.distance = self.distance.round(2)
     end
+  end
+
+  def sortLength
+
+  end
+  def sortName
+
   end
 end

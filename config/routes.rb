@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resource :user_session, only: [:new, :create, :destroy]
   resources :users, only: [:new, :create]
-  resources :tracks
+  resources :tracks, only: :index
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
